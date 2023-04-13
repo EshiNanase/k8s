@@ -15,7 +15,9 @@ spec:
     spec:
       containers:
         - name: django
-          image: django_app:latest
+          image: eshinanase/django_app:latest
+          ports:
+            - containerPort: 80
           env:
             - name: SECRET_KEY
               valueFrom:
@@ -37,6 +39,29 @@ spec:
                 configMapKeyRef:
                   name: django-config-v1
                   key: ALLOWED_HOSTS
-          imagePullPolicy: Never
-          ports:
-            - containerPort: 80
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: django-migrations
+spec:
+  ttlSecondsAfterFinished: 40
+  template:
+    spec:
+      containers:
+        - name: django
+          image: eshinanase/django_app:latest
+          command: ['python', 'manage.py', 'migrate', '--noinput']
+          env:
+            - name: SECRET_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: django-config-v1
+                  key: SECRET_KEY
+            - name: DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: django-config-v1
+                  key: DATABASE_URL
+      restartPolicy: Never
+  backoffLimit: 5

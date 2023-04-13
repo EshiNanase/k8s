@@ -2,14 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f930ba4b-f9cd-490f-b514-de5424316ea4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/django-config.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/django-deployment.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/django-service.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ingress.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/django-config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/django-config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/django-deployment.yml" beforeDir="false" afterPath="$PROJECT_DIR$/django-deployment.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +46,8 @@
       <workItem from="1680795560057" duration="512000" />
       <workItem from="1680796145119" duration="4816000" />
       <workItem from="1680878396557" duration="7005000" />
-      <workItem from="1680941247862" duration="7826000" />
+      <workItem from="1680941247862" duration="13099000" />
+      <workItem from="1681397370723" duration="11752000" />
     </task>
     <servers />
   </component>

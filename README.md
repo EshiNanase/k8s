@@ -6,25 +6,42 @@
 
 ## Как запустить dev-версию
 
-Запустите базу данных и сайт:
+### Клонировать репозиторий
 
 ```shell-session
-$ docker-compose up
+$ git clone https://github.com/EshiNanase/k8s.git
 ```
 
-В новом терминале не выключая сайт запустите команды для настройки базы данных:
+### Запустить кластер minikube
+
+https://minikube.sigs.k8s.io/docs/
 
 ```shell-session
-$ docker-compose run web ./manage.py migrate  # создаём/обновляем таблицы в БД
-$ docker-compose run web ./manage.py createsuperuser
+$ minikube start
 ```
 
-Для тонкой настройки Docker Compose используйте переменные окружения. Их названия отличаются от тех, что задаёт docker-образа, сделано это чтобы избежать конфликта имён. Внутри docker-compose.yaml настраиваются сразу несколько образов, у каждого свои переменные окружения, и поэтому их названия могут случайно пересечься. Чтобы не было конфликтов к названиям переменных окружения добавлены префиксы по названию сервиса. Список доступных переменных можно найти внутри файла [`docker-compose.yml`](./docker-compose.yml).
+### Создать django-config.yml
 
-## Переменные окружения
+Подробнее о переменных окружения в разделе "Переменные окружения" ниже
 
-Образ с Django считывает настройки из переменных окружения:
+```shell-session
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: django-config-v1
+  labels:
+    app: django-server
+data:
+  SECRET_KEY:
+  DEBUG:
+  DATABASE_URL:
+  ALLOWED_HOSTS: "127.0.0.1,star-burger.test"
+  POSTGRES_USER:
+  POSTGRES_PASSWORD:
+  POSTGRES_DB:
+```
 
+Подробнее о переменных окружения:
 `SECRET_KEY` -- обязательная секретная настройка Django. Это соль для генерации хэшей. Значение может быть любым, важно лишь, чтобы оно никому не было известно. [Документация Django](https://docs.djangoproject.com/en/3.2/ref/settings/#secret-key).
 
 `DEBUG` -- настройка Django для включения отладочного режима. Принимает значения `TRUE` или `FALSE`. [Документация Django](https://docs.djangoproject.com/en/3.2/ref/settings/#std:setting-DEBUG).
@@ -32,3 +49,23 @@ $ docker-compose run web ./manage.py createsuperuser
 `ALLOWED_HOSTS` -- настройка Django со списком разрешённых адресов. Если запрос прилетит на другой адрес, то сайт ответит ошибкой 400. Можно перечислить несколько адресов через запятую, например `127.0.0.1,192.168.0.1,site.test`. [Документация Django](https://docs.djangoproject.com/en/3.2/ref/settings/#allowed-hosts).
 
 `DATABASE_URL` -- адрес для подключения к базе данных PostgreSQL. Другие СУБД сайт не поддерживает. [Формат записи](https://github.com/jacobian/dj-database-url#url-schema).
+
+`POSTGRES_USER` -- имя юзера для подключения к базе данных PostgreSQL
+
+`POSTGRES_PASSWORD` -- пароль для подключения к базе данных PostgreSQL [Формат записи](https://github.com/jacobian/dj-database-url#url-schema).
+
+`POSTGRES_DB` -- название вашей базы данных PostgtreSQL
+
+### Добавить в кластер все манифесты
+
+Необходимо добавить в кластер все манифесты в репозитория + созданный django-config.yml
+```shell-session
+$ kubectl apply -f
+```
+
+### Открыть сайт по ссылке
+
+```shell-session
+http://star-burger.test
+```
+

@@ -1,7 +1,7 @@
 apiVersion : apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: postgres-deployment
+  name: postgres-statefulset
 spec:
   selector:
     matchLabels:
@@ -20,16 +20,16 @@ spec:
           env:
             - name: POSTGRES_USER
               valueFrom:
-                configMapKeyRef:
-                  name: django-config-v1
+                secretKeyRef:
+                  name: django-secret
                   key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
-                configMapKeyRef:
-                  name: django-config-v1
+                secretKeyRef:
+                  name: django-secret
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
               valueFrom:
-                configMapKeyRef:
-                  name: django-config-v1
+                secretKeyRef:
+                  name: django-secret
                   key: POSTGRES_DB

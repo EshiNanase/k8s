@@ -21,23 +21,23 @@ spec:
           env:
             - name: SECRET_KEY
               valueFrom:
-                configMapKeyRef:
-                  name: django-config-v1
+                secretKeyRef:
+                  name: django-secret
                   key: SECRET_KEY
             - name: DEBUG
               valueFrom:
-                configMapKeyRef:
-                  name: django-config-v1
+                secretKeyRef:
+                  name: django-secret
                   key: DEBUG
             - name: DATABASE_URL
               valueFrom:
-                configMapKeyRef:
-                  name: django-config-v1
+                secretKeyRef:
+                  name: django-secret
                   key: DATABASE_URL
             - name: ALLOWED_HOSTS
               valueFrom:
-                configMapKeyRef:
-                  name: django-config-v1
+                secretKeyRef:
+                  name: django-secret
                   key: ALLOWED_HOSTS
 ---
 apiVersion: batch/v1
@@ -55,13 +55,13 @@ spec:
           env:
             - name: SECRET_KEY
               valueFrom:
-                configMapKeyRef:
-                  name: django-config-v1
+                secretKeyRef:
+                  name: django-secret
                   key: SECRET_KEY
             - name: DATABASE_URL
               valueFrom:
-                configMapKeyRef:
-                  name: django-config-v1
+                secretKeyRef:
+                  name: django-secret
                   key: DATABASE_URL
       restartPolicy: Never
   backoffLimit: 5

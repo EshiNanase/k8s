@@ -20,25 +20,25 @@ https://minikube.sigs.k8s.io/docs/
 $ minikube start
 ```
 
-### Создать django-config.yml
+### Создать django-secret.yml
 
 Подробнее о переменных окружения в разделе "Переменные окружения" ниже
 
 ```shell-session
 apiVersion: v1
-kind: ConfigMap
+kind: Secret
 metadata:
-  name: django-config-v1
-  labels:
-    app: django-server
+  name: django-secret
+type: Opaque
 data:
   SECRET_KEY:
-  DEBUG:
+  DEBUG: 
   DATABASE_URL:
-  ALLOWED_HOSTS: "127.0.0.1,star-burger.test"
+  ALLOWED_HOSTS:
   POSTGRES_USER:
   POSTGRES_PASSWORD:
   POSTGRES_DB:
+
 ```
 
 Подробнее о переменных окружения:
@@ -58,7 +58,7 @@ data:
 
 ### Добавить в кластер все манифесты
 
-Необходимо добавить в кластер все манифесты в репозитория + созданный django-config.yml
+Необходимо добавить в кластер все манифесты в репозитория + созданный django-secret.yml
 ```shell-session
 $ kubectl apply -f
 ```

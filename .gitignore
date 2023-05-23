@@ -130,3 +130,5 @@ dmypy.json
 .idea/
 django-config.yml
 django-secret.yml
+django-service.yml
+sa-key.json

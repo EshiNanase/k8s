@@ -32,7 +32,7 @@ metadata:
 type: Opaque
 data:
   SECRET_KEY:
-  DEBUG: 
+  DEBUG:
   DATABASE_URL:
   ALLOWED_HOSTS:
   POSTGRES_USER:
@@ -58,9 +58,9 @@ data:
 
 ### Добавить в кластер все манифесты
 
-Необходимо добавить в кластер все манифесты в репозитория + созданный django-secret.yml
+Необходимо добавить в кластер все манифесты в репозитории + созданный django-secret.yml
 ```shell-session
-$ kubectl apply -f
+$ kubectl apply -f MANIFEST.yml
 ```
 
 ### Открыть сайт по ссылке
@@ -69,3 +69,92 @@ $ kubectl apply -f
 http://star-burger.test
 ```
 
+## Как запустить prod версию в Yandex Cloud
+
+Следуйте гайду: https://cloud.yandex.ru/docs/managed-kubernetes/tutorials/new-kubernetes-project
+Или же идите по следующим шагам
+
+### Установите Yandex CLI
+```
+https://cloud.yandex.ru/docs/cli/quickstart#install
+```
+
+### Запустите базу данных Yandex Managed Service for PostgreSQL
+```
+https://cloud.yandex.ru/services/managed-postgresql
+```
+
+### Создайте Application Load Balancer
+```
+https://cloud.yandex.ru/docs/managed-kubernetes/operations/applications/alb-ingress-controller
+```
+
+### Подключитесь к кластеру
+```
+https://cloud.yandex.ru/docs/managed-kubernetes/operations/connect/#kubectl-connect
+```
+
+### Создайте django-secret.yml
+
+Заполните его данными, полученными при создании базы данных PostgreSQL.
+Данные необходимо зашифровать, например, этим сайтом: https://www.base64encode.org/
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: django-secret
+type: Opaque
+data:
+  SECRET_KEY: SECRET_KEY
+  DEBUG: DEBUG
+  DATABASE_URL: DATABASE_URL
+  ALLOWED_HOSTS: ALLOWED_HOSTS
+  POSTGRES_USER: USER
+  POSTGRES_PASSWORD: PASSWORD
+  POSTGRES_DB: DB
+```
+
+### Создайте django-service.yml
+
+Замените NODEPORT вашим NodePort'ом
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-service
+spec:
+  selector:
+    app: django-server
+  type: NodePort
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP
+      nodePort: NODEPORT
+```
+
+### Примените следующие манифесты
+
+```
+kubectl apply -f django-secret.yml
+```
+
+```
+kubectl apply -f django-deployment.yml
+```
+
+```
+kubectl apply -f django-clearsessions.yml
+```
+
+```
+kubectl apply -f django-service.yml
+```
+
+### Проверьте работоспособность сайта
+
+DOMAN - доменное имя, которое вы указали при создании Application Load Balancer
+```
+curl https://DOMAN
+```

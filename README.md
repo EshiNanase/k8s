@@ -72,7 +72,8 @@ http://star-burger.test
 ## Как запустить prod версию в Yandex Cloud
 
 Следуйте гайду: https://cloud.yandex.ru/docs/managed-kubernetes/tutorials/new-kubernetes-project
-Или же идите по следующим шагам
+
+Или же идите по следующим шагам.
 
 ### Установите Yandex CLI
 ```
@@ -97,6 +98,7 @@ https://cloud.yandex.ru/docs/managed-kubernetes/operations/connect/#kubectl-conn
 ### Создайте django-secret.yml
 
 Заполните его данными, полученными при создании базы данных PostgreSQL.
+
 Данные необходимо зашифровать, например, этим сайтом: https://www.base64encode.org/
 ```
 apiVersion: v1

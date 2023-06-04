@@ -19,3 +19,14 @@ spec:
                 name: django-service
                 port:
                   number: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-service
+spec:
+  selector:
+    app: django-server
+  ports:
+    - protocol: TCP
+      port: 80
